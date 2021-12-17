@@ -1,0 +1,24 @@
+.
+├── proto
+│   └── service
+│       └── hello
+│           └── hello.proto
+├── go
+│   └── service
+│       └── hello
+│           ├── hello.pb.go: type defination
+│           ├── hello.pb.json.go: override JSON (un)marshalling
+│           ├── hello.pb.gw.go: grpc-gateway
+│           ├── hello.pb.api.go: http client
+│           ├── hello_grpc.pb.go: grpc client + server
+│           └── hello.pb.mock.go: client go mock
+├── java
+│   └── service
+│       ├── hello.java: type defination
+│       └── helloGRPC.java grpc client + server
+└── node
+    └── service
+        └── hello
+            ├── hello.ts: type defination
+            ├── hello.grpc-client.ts: grpc client
+            └── hello.grpc-server.ts: grpc server

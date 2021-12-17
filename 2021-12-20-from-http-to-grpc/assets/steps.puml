@@ -1,0 +1,95 @@
+@startuml step1
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+node client2
+node server
+
+client1-->server : HTTP
+client2-->server : HTTP
+
+@enduml
+
+@startuml step2
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+node client2
+card {
+  cloud gateway
+  node server
+}
+client1-->gateway : HTTP
+client2-->gateway : HTTP
+gateway-->server: gRPC
+
+@enduml
+
+@startuml step3
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+node client2
+card {
+  cloud gateway
+  node server
+}
+client1-->gateway : HTTP
+client2-->server : gRPC
+gateway-->server: gRPC
+
+@enduml
+
+@startuml lb1
+skinparam monochrome true
+skinparam handwritten true
+
+card {
+  node client
+  cloud conn_pool
+}
+node server1
+node server2
+node server3
+
+client-->conn_pool
+conn_pool-.>server1
+conn_pool-.>server2
+conn_pool-.>server3
+
+@enduml
+
+@startuml lb2
+skinparam monochrome true
+skinparam handwritten true
+
+node client
+node server1
+node server2
+node server3
+
+client<-->server1
+
+@enduml
+
+@startuml lb_sidecar
+skinparam monochrome true
+skinparam handwritten true
+
+node client
+node server1
+node server2
+node server3
+
+client<-->server1
+
+@enduml

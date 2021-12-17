@@ -1,0 +1,17 @@
+syntax = "proto3";
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      path: "/internals/getUser",
+      body: "*"
+    };
+  }
+}
+message GetUserRequest {
+  string username = 1;
+}
+message GetUserResponse {
+  string id = 1;
+  string username = 2;
+  string screenName = 3;
+}
