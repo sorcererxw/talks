@@ -1,0 +1,199 @@
+@startuml ci
+skinparam monochrome true
+skinparam handwritten true
+
+start
+:编写IDL;
+:Github Action;
+split
+  :**Java**
+  - ProtoBuf types
+  - gRPC server
+  - gRPC client;
+  :Maven Registry;
+split again
+  :**Node**  
+  - ProtoBuf types
+  - gRPC server
+  - gRPC client;
+  :NPM Registry;
+split again
+  :**Go**
+  - ProtoBuf types
+  - HTTP client
+  - API mock
+  - grpc-gateway server
+  - gRPC server
+  - gRPC client;
+  :Github Repository;
+end split
+stop
+
+@enduml
+
+@startuml step1
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+card {
+  node client2
+  node SDK
+}
+node server
+
+client1-->server : HTTP
+client2->SDK: gRPC interface
+SDK-->server : HTTP
+
+@enduml
+
+@startuml step2
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+card {
+  node client2
+  node SDK
+}
+card {
+  cloud gateway
+  node server
+}
+client1-->gateway : HTTP
+client2->SDK: gRPC interface
+SDK-->gateway : HTTP
+gateway->server: gRPC
+
+@enduml
+
+@startuml step3
+skinparam monochrome true
+skinparam handwritten true
+
+left to right direction
+
+node client1
+card {
+  node client2
+  node SDK
+}
+card {
+  cloud gateway
+  node server
+}
+client1-->gateway : HTTP
+client2->SDK: gRPC interface
+SDK-->server : gRPC
+gateway->server: gRPC
+
+@enduml
+
+@startuml lb1
+skinparam monochrome true
+skinparam handwritten true
+
+card {
+  node client
+  cloud conn_pool
+}
+node server1
+node server2
+node server3
+
+client-->conn_pool
+conn_pool-.>server1
+conn_pool-.>server2
+conn_pool-.>server3
+
+@enduml
+
+@startuml lb2
+skinparam monochrome true
+skinparam handwritten true
+left to right direction
+
+node client
+node server1
+node server2
+node server3
+
+client --> Envoy: HTTP2
+Envoy --> server1
+Envoy --> server2
+Envoy --> server3
+
+@enduml
+
+@enduml
+
+@startuml degrade
+skinparam monochrome true
+skinparam handwritten true
+left to right direction
+
+node client
+node server
+
+client <-- Envoy: HTTP/502
+Envoy <.. server: ❌
+
+@enduml
+
+@startuml lb_sidecar
+skinparam monochrome true
+skinparam handwritten true
+
+node client
+node server1
+node server2
+node server3
+
+client<-->server1
+
+@enduml
+
+@startuml dev_process
+skinparam monochrome true
+skinparam handwritten true
+left to right direction
+
+actor dev1
+actor dev2
+usecase (协商接口) as itf
+usecase (定义Proto) as proto
+usecase (开发服务端) as server
+usecase (开发客户端) as client
+
+:dev1: --> itf : 1
+:dev2: --> itf : 1
+itf --> proto : 2
+proto ..> server: Provide\nServer
+proto ..> client: Provide\nClient
+dev1 --> server: 3
+dev2 --> client: 3
+server --> (联调): 4
+client --> (联调): 4
+
+@enduml
+
+@startuml mux
+skinparam monochrome true
+skinparam handwritten true
+left to right direction
+
+Card {
+  HTTP
+}
+
+request --> HTTP
+
+HTTP --> Controller: /1.0/*
+HTTP --> Gateway: /internals/*
+
+@enduml

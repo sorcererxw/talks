@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.article": "markdown",
+    "*.slide": "markdown"
+  }
+}

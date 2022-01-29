@@ -1,0 +1,17 @@
+message Payload {
+  message Sub {}
+  enum Type {
+    TYPE_NONE = 0;
+    TYPE_A = 1;
+    TYPE_B = 2;
+  }
+  int64 num = 1;                      // bigint
+  double num_f = 2;                   // number
+  google.protobuf.Timestamp time = 3; // Date
+  google.protobuf.Value value = 4;    // any
+  map<string,int32> m = 5;            // {[string]:number}
+  repeated string l = 6;              // string[]
+  Sub s = 7;                          // {}
+  Type t = 8;                         // enum
+  optional string f = 9;              // string?
+}
